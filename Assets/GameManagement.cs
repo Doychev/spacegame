@@ -12,6 +12,7 @@ public class GameManagement : NetworkBehaviour
 
     public GameObject playersUI;
 
+    private int defender;
     private NetworkManager manager;
 
     void Awake()
@@ -27,7 +28,11 @@ public class GameManagement : NetworkBehaviour
 
         RegisterPlayers(lobbyManager.GetComponentsInChildren<LobbyPlayer>(true));
 
+        defender = DrawDefender();
+
         SetupPlayerDashboard();
+
+        FlipAttackerCamera();
 
         //print(manager.client.connection.connectionId);
 
@@ -37,6 +42,14 @@ public class GameManagement : NetworkBehaviour
         //print(playerList[0].netId);
         //print(playerList[0].playerControllerId);
         // GetComponentInChildren<Text>().text = manager.client.connection.connectionId + "-" + playerList[0].netId + " -" + playerList[0].playerControllerId;
+    }
+
+    private void FlipAttackerCamera()
+    {
+        if (defender == manager.client.connection.connectionId)
+        {
+            Camera.main.transform.Rotate(new Vector3(0, 0, 180));
+        }
     }
 
     public void RegisterPlayers(LobbyPlayer[] players)
@@ -64,6 +77,6 @@ public class GameManagement : NetworkBehaviour
 
         var playersUINames = new Text[2] { p1Text, p2Text };
 
-        playersUINames[DrawDefender()].text += ": Defernder";
+        playersUINames[defender].text += ": Defender";
     }
 }
