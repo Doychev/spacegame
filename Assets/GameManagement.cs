@@ -12,7 +12,7 @@ public class GameManagement : NetworkBehaviour
 
     public GameObject playersUI;
 
-    private int defender;
+    private int defender, attacker;
     private NetworkManager manager;
 
     void Awake()
@@ -29,22 +29,41 @@ public class GameManagement : NetworkBehaviour
         RegisterPlayers(lobbyManager.GetComponentsInChildren<LobbyPlayer>(true));
 
         defender = DrawDefender();
+        attacker = (defender + 1) % 2;
 
         SetupPlayerDashboard();
 
-        FlipAttackerCamera();
+        FlipDefenderCamera();
+
+        if (defender == manager.client.connection.connectionId)
+        {
+            PrepareDefender();
+        } else if (attacker == manager.client.connection.connectionId)
+        {
+            PrepareAttacker();
+        }
 
         //print(manager.client.connection.connectionId);
 
         //playerList[0].netId;
-       
+
         //print(manager.client.connection.connectionId);
         //print(playerList[0].netId);
         //print(playerList[0].playerControllerId);
         // GetComponentInChildren<Text>().text = manager.client.connection.connectionId + "-" + playerList[0].netId + " -" + playerList[0].playerControllerId;
     }
 
-    private void FlipAttackerCamera()
+    public void PrepareDefender()
+    {
+
+    }
+
+    public void PrepareAttacker()
+    {
+
+    }
+
+    private void FlipDefenderCamera()
     {
         if (defender == manager.client.connection.connectionId)
         {
