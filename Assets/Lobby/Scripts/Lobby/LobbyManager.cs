@@ -6,10 +6,9 @@ using UnityEngine.Networking.Types;
 using UnityEngine.Networking.Match;
 using System.Collections;
 
-
 namespace Prototype.NetworkLobby
 {
-    public class LobbyManager : NetworkLobbyManager 
+    public class LobbyManager : NetworkLobbyManager
     {
         static short MsgKicked = MsgType.Highest + 1;
 
@@ -48,7 +47,7 @@ namespace Prototype.NetworkLobby
         public bool _isMatchmaking = false;
 
         protected bool _disconnectServer = false;
-        
+
         protected ulong _currentMatchID;
 
         protected LobbyHook _lobbyHooks;
@@ -65,6 +64,8 @@ namespace Prototype.NetworkLobby
             DontDestroyOnLoad(gameObject);
 
             SetServerInfo("Offline", "None");
+
+
         }
 
         public override void OnLobbyClientSceneChanged(NetworkConnection conn)
@@ -179,7 +180,7 @@ namespace Prototype.NetworkLobby
         {
             ChangeTo(mainMenuPanel);
         }
-                 
+
         public void StopHostClbk()
         {
             if (_isMatchmaking)
@@ -192,7 +193,7 @@ namespace Prototype.NetworkLobby
                 StopHost();
             }
 
-            
+
             ChangeTo(mainMenuPanel);
         }
 
@@ -337,15 +338,15 @@ namespace Prototype.NetworkLobby
 
         public override void OnLobbyServerPlayersReady()
         {
-			bool allready = true;
-			for(int i = 0; i < lobbySlots.Length; ++i)
-			{
-				if(lobbySlots[i] != null)
-					allready &= lobbySlots[i].readyToBegin;
-			}
+            bool allready = true;
+            for (int i = 0; i < lobbySlots.Length; ++i)
+            {
+                if (lobbySlots[i] != null)
+                    allready &= lobbySlots[i].readyToBegin;
+            }
 
-			if(allready)
-				StartCoroutine(ServerCountdownCoroutine());
+            if (allready)
+                StartCoroutine(ServerCountdownCoroutine());
         }
 
         public IEnumerator ServerCountdownCoroutine()
@@ -382,6 +383,8 @@ namespace Prototype.NetworkLobby
                 }
             }
 
+            GameObject.Find("GameManager").GetComponent<GameManagement>().RegisterPlayers(lobbySlots);
+            //
             ServerChangeScene(playScene);
         }
 
@@ -389,6 +392,7 @@ namespace Prototype.NetworkLobby
 
         public override void OnClientConnect(NetworkConnection conn)
         {
+
             base.OnClientConnect(conn);
 
             infoPanel.gameObject.SetActive(false);
@@ -402,7 +406,6 @@ namespace Prototype.NetworkLobby
                 SetServerInfo("Client", networkAddress);
             }
         }
-
 
         public override void OnClientDisconnect(NetworkConnection conn)
         {
