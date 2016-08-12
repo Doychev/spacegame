@@ -383,8 +383,6 @@ namespace Prototype.NetworkLobby
                 }
             }
 
-            GameObject.Find("GameManager").GetComponent<GameManagement>().RegisterPlayers(lobbySlots);
-            //
             ServerChangeScene(playScene);
         }
 
