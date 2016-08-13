@@ -18,7 +18,7 @@ public class TowerControl : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+
         if (localPlayerAuthority && Input.GetMouseButtonDown(0))
         {
 
@@ -26,7 +26,6 @@ public class TowerControl : NetworkBehaviour
 
             if (hit && hit.transform.tag == "Tower")
                 SelectTower();
-
         }
 
     }
