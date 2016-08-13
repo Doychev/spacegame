@@ -46,6 +46,7 @@ GameObject:
   - 212: {fileID: 21221628}
   - 114: {fileID: 11405254}
   - 114: {fileID: 11469520}
+  - 114: {fileID: 11445658}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -136,6 +137,18 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &11445658
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 153792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74db8ca2dee8be9478a5401d927ec545, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tower: {fileID: 120918, guid: a17d4cfd14c55ac4aafd38bee5c5947c, type: 2}
 --- !u!114 &11458176
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -15,6 +15,8 @@ public class GameManagement : NetworkBehaviour
     private int defender, attacker;
     private NetworkManager manager;
 
+    private GameObject playerObject;
+
     void Awake()
     {
         //DontDestroyOnLoad(this);
@@ -37,36 +39,24 @@ public class GameManagement : NetworkBehaviour
 
         if (defender == manager.client.connection.connectionId)
         {
-            PrepareDefender();
+            CmdPrepareDefender();
         }
         else if (attacker == manager.client.connection.connectionId)
         {
             PrepareAttacker();
         }
-
-        //print(manager.client.connection.connectionId);
-
-        //playerList[0].netId;
-
-        //print(manager.client.connection.connectionId);
-        //print(playerList[0].netId);
-        //print(playerList[0].playerControllerId);
-        // GetComponentInChildren<Text>().text = manager.client.connection.connectionId + "-" + playerList[0].netId + " -" + playerList[0].playerControllerId;
     }
 
-
-    public void PrepareDefender()
+    [Command]
+    public void CmdPrepareDefender()
     {
-
         var go = (GameObject)Instantiate(
-      manager.spawnPrefabs[0],
-      transform.position + new Vector3(1, 1, 0),
-      Quaternion.identity);
+     manager.spawnPrefabs[0],
+   transform.position + new Vector3(3, 3, 0),
+ Quaternion.identity);
 
-        NetworkServer.SpawnWithClientAuthority(go, connectionToClient);
-
-        print("We are now preparing....");
-        //NetworkServer.Spawn(manager.spawnPrefabs[0]);
+        go.GetComponent<NetworkIdentity>().localPlayerAuthority = true;
+        NetworkServer.Spawn(go);
     }
 
     public void PrepareAttacker()
