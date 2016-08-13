@@ -17,15 +17,12 @@ public class GameManagement : NetworkBehaviour
 
     private GameObject playerObject;
 
-    void Awake()
-    {
-        //DontDestroyOnLoad(this);
-    }
-
     void Start()
     {
         var lobbyManager = GameObject.Find("LobbyManager");
         var manager = lobbyManager.GetComponent<LobbyManager>();
+        playerObject = manager.client.connection.playerControllers[0].gameObject;
+
         RegisterManager(manager);
 
         RegisterPlayers(lobbyManager.GetComponentsInChildren<LobbyPlayer>(true));
@@ -35,40 +32,13 @@ public class GameManagement : NetworkBehaviour
 
         SetupPlayerDashboard();
 
-        FlipDefenderCamera();
-
-        if (defender == manager.client.connection.connectionId)
+        if (isCurrentClientSelectedAsDefender())
         {
-            CmdPrepareDefender();
+            playerObject.GetComponent<Defender>().enabled = true;
         }
-        else if (attacker == manager.client.connection.connectionId)
+        else if (isCurrentClientSelectedAsAttacker())
         {
-            PrepareAttacker();
-        }
-    }
-
-    [Command]
-    public void CmdPrepareDefender()
-    {
-        var go = (GameObject)Instantiate(
-     manager.spawnPrefabs[0],
-   transform.position + new Vector3(3, 3, 0),
- Quaternion.identity);
-
-        go.GetComponent<NetworkIdentity>().localPlayerAuthority = true;
-        NetworkServer.Spawn(go);
-    }
-
-    public void PrepareAttacker()
-    {
-
-    }
-
-    private void FlipDefenderCamera()
-    {
-        if (defender == manager.client.connection.connectionId)
-        {
-            Camera.main.transform.Rotate(new Vector3(0, 0, 180));
+            playerObject.GetComponent<Attacker>().enabled = true;
         }
     }
 
@@ -98,5 +68,15 @@ public class GameManagement : NetworkBehaviour
         var playersUINames = new Text[2] { p1Text, p2Text };
 
         playersUINames[defender].text += ": Defender";
+    }
+
+    private bool isCurrentClientSelectedAsDefender()
+    {
+        return defender == manager.client.connection.connectionId;
+    }
+
+    private bool isCurrentClientSelectedAsAttacker()
+    {
+        return attacker == manager.client.connection.connectionId;
     }
 }
