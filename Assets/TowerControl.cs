@@ -4,8 +4,15 @@ using UnityEngine.Networking;
 
 public class TowerControl : NetworkBehaviour
 {
+    public int health = 100;
+    public int firerate = 10; //1 to 10;
+    public int power = 10;//1 to 10;
+    public int speed = 10;//1 to 10;
 
     private SpriteRenderer selectedIndicator;
+    private bool isSelected = false;
+
+    public Vector3 waypoint;
 
     // Use this for initialization
     void Start()
@@ -19,19 +26,52 @@ public class TowerControl : NetworkBehaviour
     void Update()
     {
 
-        if (localPlayerAuthority && Input.GetMouseButtonDown(0))
+        if (
+            //localPlayerAuthority &&
+            Input.GetMouseButtonDown(0))
         {
-
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+            var mouseTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mouseTarget, Vector2.zero);
 
             if (hit && hit.transform.tag == "Tower")
-                SelectTower();
+            {
+                selectedIndicator.enabled = !selectedIndicator.enabled;
+                isSelected = !isSelected;
+            }
+            else if (isSelected)
+            {
+                SetWayPoint(mouseTarget);
+            }
+
         }
 
+        Move();
     }
 
     void SelectTower()
     {
+        isSelected = true;
         selectedIndicator.enabled = true;
+    }
+
+    void DeselectTower()
+    {
+        isSelected = false;
+        selectedIndicator.enabled = false;
+    }
+
+    void SetWayPoint(Vector3 target)
+    {
+        waypoint = new Vector3(target.x, target.y, 0);
+    }
+
+    void Move()
+    {
+        if (Vector3.Distance(transform.position, waypoint) > 0.3f)
+        {
+
+            float step = speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, waypoint, step);
+        }
     }
 }

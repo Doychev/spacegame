@@ -30,7 +30,9 @@ public class GameManagement : NetworkBehaviour
         defender = DrawDefender();
         attacker = (defender + 1) % 2;
 
-        SetupPlayerDashboard();
+       // Invoke(RpcSetupPlayerDashboard, 50);
+        //  Invoke(RpcSetupPlayerDashboard(), 3);
+        //  RpcSetupPlayerDashboard();
 
         if (isCurrentClientSelectedAsDefender())
         {
@@ -57,7 +59,13 @@ public class GameManagement : NetworkBehaviour
         return Random.Range(0, 1);
     }
 
-    private void SetupPlayerDashboard()
+    public void Update()
+    {
+
+    }
+
+    [ClientRpc]
+    private void RpcSetupPlayerDashboard()
     {
         var p1Text = playersUI.transform.Find("P1").GetComponent<Text>();
         p1Text.text = playerList[0].playerName;
@@ -78,5 +86,14 @@ public class GameManagement : NetworkBehaviour
     private bool isCurrentClientSelectedAsAttacker()
     {
         return attacker == manager.client.connection.connectionId;
+    }
+
+    void OnPlayerConnected(NetworkPlayer player)
+    {
+        print("WE ARE HERE!");
+        if (isClient)
+            return;
+
+        RpcSetupPlayerDashboard();
     }
 }
