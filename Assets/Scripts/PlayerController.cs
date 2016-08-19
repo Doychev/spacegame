@@ -3,25 +3,26 @@ using UnityEngine.Networking;
 
 public class PlayerController : NetworkBehaviour
 {
-
+   
     public GameObject alienPrefab;
 
     void Update()
     {
-        if (!isLocalPlayer)
-        {
-            return;
-        }
-
-        var x = Input.GetAxis("Horizontal") * Time.deltaTime * 2.0f;
-        var y = Input.GetAxis("Vertical") * Time.deltaTime * 2.0f;
-
-        transform.Translate(x, y, 0);
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            CmdSpawn(Camera.main.ScreenToWorldPoint(Input.mousePosition), gameObject);
-        }
+        
+        // if (!isLocalPlayer)
+        // {
+        //     return;
+        // }
+        //
+        // var x = Input.GetAxis("Horizontal") * Time.deltaTime * 2.0f;
+        // var y = Input.GetAxis("Vertical") * Time.deltaTime * 2.0f;
+        //
+        // transform.Translate(x, y, 0);
+        //
+        // if (Input.GetMouseButtonDown(0))
+        // {
+        //     CmdSpawn(Camera.main.ScreenToWorldPoint(Input.mousePosition), gameObject);
+        // }
     }
 
     [Command]

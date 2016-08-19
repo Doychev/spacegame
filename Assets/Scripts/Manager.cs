@@ -9,6 +9,8 @@ using UnityEngine.UI;
 public class Manager : NetworkManager
 {
     private GameObject HUD;
+    private GameObject spawner;
+
     private List<NetworkConnection> players = new List<NetworkConnection>();
 
     public NetworkConnection defender = null;
@@ -23,6 +25,7 @@ public class Manager : NetworkManager
     void Start()
     {
         HUD = GameObject.Find("HUD");
+        spawner = GameObject.Find("Spawner");
     }
 
     // Update is called once per frame
@@ -41,24 +44,37 @@ public class Manager : NetworkManager
             print("A game begins...");
             SetOpposingSides();
             SetupHUD();
+            var spawnerScript = GameObject.Find("Spawner").GetComponent<Spawner>();
+            spawnerScript.RegisterManager(this);
+
+            spawnerScript.CmdSetTower();
         }
     }
 
+    //Called on the server when a client disconnects.
     public override void OnServerDisconnect(NetworkConnection conn)
     {
         print("Disconnected connection id " + conn.connectionId);
-        players.Remove(conn);
+
+        players.Clear();
         EmptyHUD();
+        StopHost();
     }
 
+    //This hook is called when a host is stopped.
     public override void OnStopHost()
     {
         print("Host has been stopped...");
-        if (players.Count >= 1)
-        {
-            EmptyHUD();
-            players.RemoveAt(0);
-        }
+        EmptyHUD();
+        players.Clear();
+    }
+
+    // Called on clients when disconnected from a server.
+    public override void OnClientDisconnect(NetworkConnection conn)
+    {
+        print("Disconnected on client...");
+        players.Clear();
+        EmptyHUD();
     }
 
     private void SetupHUD()
@@ -93,11 +109,18 @@ public class Manager : NetworkManager
 
         defender = players[defenderIndex];
         attacker = players[attackerIndex];
+
+    }
+
+    private void SetTowers()
+    {
+        NetworkServer.SpawnWithClientAuthority(this.spawnPrefabs[2], attacker);
     }
 
     private int DrawDefender()
     {
         return Random.Range(0, 1);
     }
+
 
 }

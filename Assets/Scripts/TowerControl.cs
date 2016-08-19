@@ -12,7 +12,10 @@ public class TowerControl : NetworkBehaviour
     private SpriteRenderer selectedIndicator;
     private bool isSelected = false;
 
+    [SyncVar]
     public Vector3 waypoint;
+
+    public GameObject manger;
 
     // Use this for initialization
     void Start()
@@ -25,10 +28,9 @@ public class TowerControl : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+       
 
-        if (
-            //localPlayerAuthority &&
-            Input.GetMouseButtonDown(0))
+        if (hasAuthority && Input.GetMouseButtonDown(0))
         {
             var mouseTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(mouseTarget, Vector2.zero);
