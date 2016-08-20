@@ -44,10 +44,15 @@ public class Manager : NetworkManager
             print("A game begins...");
             SetOpposingSides();
             SetupHUD();
+
             var spawnerScript = GameObject.Find("Spawner").GetComponent<Spawner>();
             spawnerScript.RegisterManager(this);
 
             spawnerScript.CmdSetTower();
+            spawnerScript.RpcFlipCamera();
+
+
+            // print(NetworkServer.conn);
         }
     }
 
@@ -105,22 +110,16 @@ public class Manager : NetworkManager
         //This can be random but for now let's keep it non-random for easy testing
         //Change DrawDefender to make it truly random
         var defenderIndex = DrawDefender();
-        var attackerIndex = (defenderIndex + 1) % 2;
+        var attackerIndex = defenderIndex == 0 ? 1 : 0;
 
         defender = players[defenderIndex];
         attacker = players[attackerIndex];
-
-    }
-
-    private void SetTowers()
-    {
-        NetworkServer.SpawnWithClientAuthority(this.spawnPrefabs[2], attacker);
     }
 
     private int DrawDefender()
     {
-        return Random.Range(0, 1);
+        return 0;
+        return Random.Range(0, 2);
     }
-
 
 }

@@ -3,12 +3,12 @@ using UnityEngine.Networking;
 
 public class PlayerController : NetworkBehaviour
 {
-   
+    public GameObject flipper;
     public GameObject alienPrefab;
 
     void Update()
     {
-        
+
         // if (!isLocalPlayer)
         // {
         //     return;
@@ -37,8 +37,9 @@ public class PlayerController : NetworkBehaviour
         NetworkServer.SpawnWithClientAuthority(alien, player);
     }
 
-    public override void OnStartLocalPlayer()
-    {
-        GetComponent<MeshRenderer>().material.color = Color.blue;
-    }
+    //  public override void OnStartLocalPlayer()
+    //  {
+    //      GetComponent<MeshRenderer>().material.color = Color.blue;
+    //  }
+
 }

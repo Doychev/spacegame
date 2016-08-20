@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public abstract class AlienBehaviour : MonoBehaviour
+public class AlienBehaviour : MonoBehaviour
 {
 
     public GameObject moveTarget;
@@ -15,13 +15,22 @@ public abstract class AlienBehaviour : MonoBehaviour
     public int power = 10;//1 to 10;
     public int speed = 10;//1 to 10;
 
+    public void Start()
+    {
+        if (moveTarget == null)
+            moveTarget = GameObject.Find("HumanBase");
+    }
+    public void Update()
+    {
+        Move();
+    }
 
     protected void Move()
     {
         var target = moveTarget.transform.position;
+
         if (Vector3.Distance(transform.position, target) > 0.3f)
         {
-
             float step = speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, target, step);
 
@@ -31,8 +40,5 @@ public abstract class AlienBehaviour : MonoBehaviour
         }
     }
 
-    protected abstract void Attack();
-
-    
 }
 

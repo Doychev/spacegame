@@ -8,7 +8,7 @@ public class AlienController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        mainBase = GameObject.Find("MainBase");
+        mainBase = GameObject.Find("HumanBase");
 	}
 	
 	// Update is called once per frame
@@ -20,6 +20,7 @@ public class AlienController : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D coll)
     {
         Debug.Log(coll);
+
         if (coll.gameObject.name == "MainBase")
         {
             Destroy(gameObject);

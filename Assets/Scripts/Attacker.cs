@@ -3,39 +3,26 @@ using System.Collections;
 
 using UnityEngine.Networking;
 
-public class Attacker : NetworkBehaviour
+public class Attacker : PlayerController
 {
 
     // Use this for initialization
     void Start()
     {
-        var lobbyManager = GameObject.Find("LobbyManager");
-        //s  manager = lobbyManager.GetComponent<LobbyManager>();
 
-        // FlipDefenderCamera();
-        //CmdPrepareDefender();
-        print("connected");
     }
-
-
 
     // Update is called once per frame
     void Update()
     {
-        CmdWrite();
+
     }
 
-    [Command]
-    public void CmdWrite()
+    public void FlipCamera()
     {
-        print("start walking...");
+        Camera.main.transform.Rotate(new Vector3(0, 0, 180));
     }
 
-    private void FlipDefenderCamera()
-    {
-        if (isLocalPlayer)
-            Camera.main.transform.Rotate(new Vector3(0, 0, 180));
-    }
     //
     //  [Command]
     //  public void CmdPrepareDefender()

@@ -7,9 +7,15 @@ public class TowerControl : NetworkBehaviour
     public int health = 100;
     public int firerate = 10; //1 to 10;
     public int power = 10;//1 to 10;
-    public int speed = 10;//1 to 10;
+    public int speed = 5;//1 to 10;
+    public float range = 2;
 
-    private SpriteRenderer selectedIndicator;
+    public GameObject target;
+
+    private int cooldown;
+
+    private SpriteRenderer selectedIndicatorSprite;
+
     private bool isSelected = false;
 
     [SyncVar]
@@ -20,15 +26,16 @@ public class TowerControl : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
+        cooldown = 0;
 
-        selectedIndicator = transform.GetChild(0).GetComponent<SpriteRenderer>();
-
+        var selectedIndicator = transform.GetChild(0).gameObject;
+        selectedIndicatorSprite = selectedIndicator.GetComponent<SpriteRenderer>();
+        ResizeRangeVizualization(selectedIndicator);
     }
 
     // Update is called once per frame
     void Update()
     {
-       
 
         if (hasAuthority && Input.GetMouseButtonDown(0))
         {
@@ -37,7 +44,7 @@ public class TowerControl : NetworkBehaviour
 
             if (hit && hit.transform.tag == "Tower")
             {
-                selectedIndicator.enabled = !selectedIndicator.enabled;
+                selectedIndicatorSprite.enabled = !selectedIndicatorSprite.enabled;
                 isSelected = !isSelected;
             }
             else if (isSelected)
@@ -47,19 +54,29 @@ public class TowerControl : NetworkBehaviour
 
         }
 
+        var distance = Vector2.Distance(target.transform.position, transform.position);
+
+        if (target != null && distance < range)
+        {
+            Debug.DrawLine(transform.position, target.transform.position);
+            Fire();
+        }
+        else
+            GetTarget();
+
         Move();
     }
 
     void SelectTower()
     {
         isSelected = true;
-        selectedIndicator.enabled = true;
+        selectedIndicatorSprite.enabled = true;
     }
 
     void DeselectTower()
     {
         isSelected = false;
-        selectedIndicator.enabled = false;
+        selectedIndicatorSprite.enabled = false;
     }
 
     void SetWayPoint(Vector3 target)
@@ -76,4 +93,28 @@ public class TowerControl : NetworkBehaviour
             transform.position = Vector3.MoveTowards(transform.position, waypoint, step);
         }
     }
+
+    void Fire()
+    {
+        print("Pew pew pew...");
+    }
+
+    void ResizeRangeVizualization(GameObject selectedIndicatorObject)
+    {
+        selectedIndicatorObject.transform.localScale = new Vector3(range, range, range);
+    }
+
+    GameObject GetTarget()
+    {
+        var aliensLayer = LayerMask.NameToLayer("Aliens");
+        RaycastHit2D hit = Physics2D.CircleCast(transform.position, 50, transform.right, 500, aliensLayer);
+
+        if (hit)
+        {
+            print(hit.transform.name);
+        }
+
+        return null;
+    }
+
 }
