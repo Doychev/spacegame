@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.Networking.Match;
+using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour {
 
@@ -23,8 +24,8 @@ public class MenuController : MonoBehaviour {
 
     public void lanHost()
     {
+        SceneManager.LoadScene("Game");
         networkManager.StartHost();
-        menuCanvas.SetActive(false);
     }
 
     public void lanServerOnly()
@@ -34,8 +35,8 @@ public class MenuController : MonoBehaviour {
 
     public void lanClient()
     {
+        SceneManager.LoadScene("Game");
         networkManager.StartClient();
-        menuCanvas.SetActive(false);
     }
 
     public void stopHost()
@@ -80,8 +81,8 @@ public class MenuController : MonoBehaviour {
             MatchInfo hostInfo = new MatchInfo(matchResponse);
             NetworkServer.Listen(hostInfo, 9000);
 
+            SceneManager.LoadScene("Game");
             networkManager.StartHost(hostInfo);
-            menuCanvas.SetActive(false);
         }
         else
         {
@@ -127,8 +128,8 @@ public class MenuController : MonoBehaviour {
 
 
             MatchInfo hostInfo = new MatchInfo(matchJoin);
+            SceneManager.LoadScene("Game");
             networkManager.StartClient(hostInfo);
-            menuCanvas.SetActive(false);
         }
         else
         {

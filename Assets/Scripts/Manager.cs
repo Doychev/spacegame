@@ -42,6 +42,7 @@ public class Manager : NetworkManager
         if (players.Count >= 2)
         {
             print("A game begins...");
+            NetworkServer.SpawnObjects();
             SetOpposingSides();
             SetupHUD();
 
@@ -52,7 +53,7 @@ public class Manager : NetworkManager
             spawnerScript.RpcFlipCamera();
 
 
-            // print(NetworkServer.conn);
+            //print(NetworkServer.conn);
         }
     }
 
