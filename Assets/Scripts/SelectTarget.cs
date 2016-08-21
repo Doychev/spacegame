@@ -19,15 +19,9 @@ public class SelectTarget : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        print("trigg");
-
         if (other.tag == "Aliens")
         {
             tower.target = other.gameObject;
-            print("Setting target...");
         }
-
     }
-
-
 }
