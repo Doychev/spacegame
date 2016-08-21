@@ -10,9 +10,11 @@ public class TowerControl : NetworkBehaviour
     public int speed = 5;//1 to 10;
     public float range = 2;
 
+    public GameObject projectile;
+
     public GameObject target;
 
-    private int cooldown;
+    private float cooldown;
 
     private SpriteRenderer selectedIndicatorSprite;
 
@@ -36,14 +38,15 @@ public class TowerControl : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //Select and set waypoint for tower and move the tower if necessary
         if (hasAuthority && Input.GetMouseButtonDown(0))
         {
             var mouseTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(mouseTarget, Vector2.zero);
+            RaycastHit2D hit = Physics2D.Raycast(mouseTarget, Vector2.zero, 500, 1 << 9);
 
             if (hit && hit.transform.tag == "Tower")
             {
+                print("are we her??");
                 selectedIndicatorSprite.enabled = !selectedIndicatorSprite.enabled;
                 isSelected = !isSelected;
             }
@@ -51,32 +54,24 @@ public class TowerControl : NetworkBehaviour
             {
                 SetWayPoint(mouseTarget);
             }
-
         }
-
-        var distance = Vector2.Distance(target.transform.position, transform.position);
-
-        if (target != null && distance < range)
-        {
-            Debug.DrawLine(transform.position, target.transform.position);
-            Fire();
-        }
-        else
-            GetTarget();
 
         Move();
-    }
 
-    void SelectTower()
-    {
-        isSelected = true;
-        selectedIndicatorSprite.enabled = true;
-    }
+        //Fire at stuff if necessary 
+        if (target != null)
+        {
+            var distance = Vector2.Distance(target.transform.position, transform.position);
 
-    void DeselectTower()
-    {
-        isSelected = false;
-        selectedIndicatorSprite.enabled = false;
+            if (distance < range)
+            {
+                Debug.DrawLine(transform.position, target.transform.position);
+                Fire();
+            }
+        }
+
+        if (cooldown > 0)
+            cooldown -= Time.deltaTime;
     }
 
     void SetWayPoint(Vector3 target)
@@ -94,9 +89,18 @@ public class TowerControl : NetworkBehaviour
         }
     }
 
+
     void Fire()
     {
+
         print("Pew pew pew...");
+
+        if (cooldown <= 0 && target != null)
+        {
+            CmdCreateProjectile();
+            cooldown = firerate;
+        }
+
     }
 
     void ResizeRangeVizualization(GameObject selectedIndicatorObject)
@@ -104,17 +108,11 @@ public class TowerControl : NetworkBehaviour
         selectedIndicatorObject.transform.localScale = new Vector3(range, range, range);
     }
 
-    GameObject GetTarget()
+    [Command]
+    void CmdCreateProjectile()
     {
-        var aliensLayer = LayerMask.NameToLayer("Aliens");
-        RaycastHit2D hit = Physics2D.CircleCast(transform.position, 50, transform.right, 500, aliensLayer);
-
-        if (hit)
-        {
-            print(hit.transform.name);
-        }
-
-        return null;
+        var proj = (GameObject)Instantiate(projectile);
+        proj.GetComponent<Projectile>().target = this.target;
+        NetworkServer.Spawn(proj);
     }
-
 }
