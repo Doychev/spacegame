@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 public class TowerControl : NetworkBehaviour
 {
     public int health = 100;
-    public int firerate = 10; //1 to 10;
+    public float fireCooldown = 1; //1 to 10;
     public int power = 10;//1 to 10;
     public int speed = 5;//1 to 10;
     public float range = 2;
@@ -98,7 +98,7 @@ public class TowerControl : NetworkBehaviour
         if (cooldown <= 0 && target != null)
         {
             CmdCreateProjectile();
-            cooldown = firerate;
+            cooldown = fireCooldown;
         }
 
     }
@@ -111,7 +111,7 @@ public class TowerControl : NetworkBehaviour
     [Command]
     void CmdCreateProjectile()
     {
-        var proj = (GameObject)Instantiate(projectile);
+        var proj = (GameObject)Instantiate(projectile, transform.position, new Quaternion());
         proj.GetComponent<Projectile>().target = this.target;
         NetworkServer.Spawn(proj);
     }

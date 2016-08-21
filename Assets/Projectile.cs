@@ -6,6 +6,8 @@ public class Projectile : NetworkBehaviour
 {
 
     public int speed = 10;
+
+    [SyncVar]
     public GameObject target;
 
     public void Start()
@@ -36,7 +38,9 @@ public class Projectile : NetworkBehaviour
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
         else
-            Network.Destroy(GetComponent<NetworkView>().viewID);
-
+        {
+            Destroy(gameObject);
+            // Network.Destroy(GetComponent<NetworkView>().viewID);
+        }
     }
 }
