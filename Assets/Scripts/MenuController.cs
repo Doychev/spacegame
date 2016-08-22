@@ -9,17 +9,54 @@ public class MenuController : MonoBehaviour {
 
     private NetworkManager networkManager;
     private NetworkMatch networkMatch;
-    private GameObject lanScreen, matchmakingScreen, menuCanvas;
+    private GameObject mainScreen, optionsScreen, aboutScreen, lanScreen, matchmakingScreen, menuCanvas;
+    private GameObject currentScreen;
     private InputField inputField;
 
 	// Use this for initialization
 	void Start () {
         networkManager = GameObject.Find("NetworkManager").GetComponent<Manager>();
         menuCanvas = GameObject.Find("MenuCanvas");
+        mainScreen = GameObject.Find("MainScreen");
+        optionsScreen = GameObject.Find("OptionsScreen");
+        aboutScreen = GameObject.Find("AboutScreen");
         lanScreen = GameObject.Find("LanScreen");
         matchmakingScreen = GameObject.Find("MatchmakingScreen");
         inputField = GameObject.Find("inputName").GetComponent<InputField>();
+        lanScreen.SetActive(false);
         matchmakingScreen.SetActive(false);
+        optionsScreen.SetActive(false);
+        aboutScreen.SetActive(false);
+        currentScreen = mainScreen;
+    }
+
+    public void showPlayMenu()
+    {
+        currentScreen.SetActive(false);
+        lanScreen.SetActive(true);
+        currentScreen = lanScreen;
+    }
+
+    public void showAboutMenu()
+    {
+        currentScreen.SetActive(false);
+        aboutScreen.SetActive(true);
+        currentScreen = aboutScreen;
+
+    }
+
+    public void showOptionsMenu()
+    {
+        currentScreen.SetActive(false);
+        optionsScreen.SetActive(true);
+        currentScreen = optionsScreen;
+    }
+
+    public void backToMain()
+    {
+        currentScreen.SetActive(false);
+        mainScreen.SetActive(true);
+        currentScreen = mainScreen;
     }
 
     public void lanHost()
