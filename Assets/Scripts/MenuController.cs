@@ -32,8 +32,9 @@ public class MenuController : MonoBehaviour {
 
     public void switchScreen(GameObject screenToShow)
     {
-        currentScreen.SetActive(false);
-        screenToShow.SetActive(true);
+        float time = 0.3f;
+        StartCoroutine(FadeScreen(false, time, currentScreen));
+        StartCoroutine(FadeScreen(true, time, screenToShow));
         currentScreen = screenToShow;
     }
 
@@ -153,5 +154,18 @@ public class MenuController : MonoBehaviour {
     {
         Debug.Log("Quitting...");
         Application.Quit();
+    }
+
+    public IEnumerator FadeScreen(bool isActive, float time, GameObject objectToFade)
+    {
+        float alphaValue = 0.0f;
+        if (isActive) { alphaValue = 1.0f; }
+        Graphic[] graphics = objectToFade.GetComponentsInChildren<Graphic>();
+        foreach (Graphic graphic in graphics)
+        {
+            graphic.CrossFadeAlpha(alphaValue, time, false);
+        }
+        yield return new WaitForSeconds(time*2);
+        objectToFade.SetActive(isActive);
     }
 }
