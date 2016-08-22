@@ -30,33 +30,11 @@ public class MenuController : MonoBehaviour {
         currentScreen = mainScreen;
     }
 
-    public void showPlayMenu()
+    public void switchScreen(GameObject screenToShow)
     {
         currentScreen.SetActive(false);
-        lanScreen.SetActive(true);
-        currentScreen = lanScreen;
-    }
-
-    public void showAboutMenu()
-    {
-        currentScreen.SetActive(false);
-        aboutScreen.SetActive(true);
-        currentScreen = aboutScreen;
-
-    }
-
-    public void showOptionsMenu()
-    {
-        currentScreen.SetActive(false);
-        optionsScreen.SetActive(true);
-        currentScreen = optionsScreen;
-    }
-
-    public void backToMain()
-    {
-        currentScreen.SetActive(false);
-        mainScreen.SetActive(true);
-        currentScreen = mainScreen;
+        screenToShow.SetActive(true);
+        currentScreen = screenToShow;
     }
 
     public void lanHost()
