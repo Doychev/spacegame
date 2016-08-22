@@ -58,22 +58,19 @@ public class MenuController : MonoBehaviour {
     {
         networkManager.StopHost();
         menuCanvas.SetActive(true);
-        lanScreen.SetActive(true);
-        matchmakingScreen.SetActive(false);
+        switchScreen(lanScreen);
     }
 
     public void enableMatchmaker()
     {
         networkManager.StartMatchMaker();
-        lanScreen.SetActive(false);
-        matchmakingScreen.SetActive(true);
+        switchScreen(matchmakingScreen);
     }
 
     public void disableMatchmaker()
     {
         networkManager.StopMatchMaker();
-        lanScreen.SetActive(true);
-        matchmakingScreen.SetActive(false);
+        switchScreen(lanScreen);
     }
 
     public void createMatch()
