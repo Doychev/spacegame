@@ -165,7 +165,10 @@ public class MenuController : MonoBehaviour {
         {
             graphic.CrossFadeAlpha(alphaValue, time, false);
         }
-        yield return new WaitForSeconds(time*2);
+        if (!isActive)
+        {
+            yield return new WaitForSeconds(time);
+        }
         objectToFade.SetActive(isActive);
     }
 }
