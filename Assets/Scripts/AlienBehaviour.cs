@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class AlienBehaviour : MonoBehaviour
+public class AlienBehaviour : NetworkBehaviour
 {
-
     public GameObject moveTarget;
     public GameObject fireTarget;
 
+    [SyncVar]
     public int health = 100;
+
     public int firerate = 10; //1 to 10;
     public int power = 10;//1 to 10;
     public int speed = 10;//1 to 10;
@@ -20,6 +22,7 @@ public class AlienBehaviour : MonoBehaviour
         if (moveTarget == null)
             moveTarget = GameObject.Find("HumanBase");
     }
+
     public void Update()
     {
         Move();
@@ -40,5 +43,17 @@ public class AlienBehaviour : MonoBehaviour
         }
     }
 
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+
+        if (health <= 0)
+            Die();
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
+    }
 }
 
