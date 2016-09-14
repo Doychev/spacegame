@@ -10,8 +10,7 @@ public class AlienBehaviour : NetworkBehaviour
 {
     public GameObject moveTarget;
     public GameObject fireTarget;
-
-    [SyncVar(hook = "DecreaseHealthBar")]
+   
     public int health = 100;
 
     private int maxHealth = 100;
@@ -20,14 +19,14 @@ public class AlienBehaviour : NetworkBehaviour
     public int power = 10;//1 to 10;
     public int speed = 10;//1 to 10;
 
-    private Image healthImage;
+    private HP_Visual hpCircle;
 
     public void Start()
     {
         if (moveTarget == null)
             moveTarget = GameObject.Find("HumanBase");
 
-        healthImage = GetComponentInChildren<Image>();
+        hpCircle = GetComponentInChildren<HP_Visual>();
         maxHealth = health;
     }
 
@@ -54,6 +53,7 @@ public class AlienBehaviour : NetworkBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
+        hpCircle.ChangeHealthAmount(health, maxHealth);
 
         if (health <= 0)
             Die();
@@ -64,11 +64,6 @@ public class AlienBehaviour : NetworkBehaviour
         Destroy(gameObject);
     }
 
-    public void DecreaseHealthBar(int currentHealthNumber)
-    {
-        var fill = currentHealthNumber / (float)maxHealth;
-        healthImage.fillAmount = fill;
-        healthImage.color = Color.Lerp(Color.red, Color.green, fill);
-    }
+
 }
 

@@ -24,7 +24,10 @@ public class Projectile : NetworkBehaviour
     protected void Move()
     {
         if (this.target == null)
+        {
+            Destroy(gameObject);
             return;
+        }
 
         var targetPosition = this.target.transform.position;
 
