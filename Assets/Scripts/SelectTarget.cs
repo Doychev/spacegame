@@ -3,12 +3,12 @@ using System.Collections;
 
 public class SelectTarget : MonoBehaviour
 {
-    TowerControl tower;
+    AttackBehaviour tower;
 
     // Use this for initialization
     void Start()
     {
-        tower = transform.parent.GetComponent<TowerControl>();
+        tower = transform.parent.GetComponent<AttackBehaviour>();
     }
 
     // Update is called once per frame

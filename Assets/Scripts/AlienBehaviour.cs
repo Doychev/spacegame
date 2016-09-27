@@ -10,60 +10,46 @@ public class AlienBehaviour : NetworkBehaviour
 {
     public GameObject moveTarget;
     public GameObject fireTarget;
-   
-    public int health = 100;
-
-    private int maxHealth = 100;
-
     public int firerate = 10; //1 to 10;
+    public int range = 10;
     public int power = 10;//1 to 10;
     public int speed = 10;//1 to 10;
 
     private HP_Visual hpCircle;
+    private AttackBehaviour attackBehaviour;
 
     public void Start()
     {
         if (moveTarget == null)
             moveTarget = GameObject.Find("HumanBase");
 
+        if (fireTarget == null)
+            moveTarget = GameObject.Find("HumanBase");
+
+        attackBehaviour = GetComponent<AttackBehaviour>();
         hpCircle = GetComponentInChildren<HP_Visual>();
-        maxHealth = health;
     }
 
     public void Update()
     {
-        Move();
+        if (Vector3.Distance(transform.position, moveTarget.transform.position) > 0.3f)
+            Move();
+        else {
+            //  attackBehaviour.Fire(fireTarget);
+        }
+
     }
 
     protected void Move()
     {
         var target = moveTarget.transform.position;
 
-        if (Vector3.Distance(transform.position, target) > 0.3f)
-        {
-            float step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, target, step);
+        float step = speed * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, target, step);
 
-            var dir = target - transform.position;
-            var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        }
+        var dir = target - transform.position;
+        var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
-
-    public void TakeDamage(int damage)
-    {
-        health -= damage;
-        hpCircle.ChangeHealthAmount(health, maxHealth);
-
-        if (health <= 0)
-            Die();
-    }
-
-    private void Die()
-    {
-        Destroy(gameObject);
-    }
-
-
 }
 

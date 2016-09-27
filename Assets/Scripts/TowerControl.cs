@@ -5,16 +5,12 @@ using UnityEngine.Networking;
 public class TowerControl : NetworkBehaviour
 {
     public int health = 100;
-    public float fireCooldown = 1; //1 to 10;
+    
     public int power = 10;//1 to 10;
     public int speed = 5;//1 to 10;
     public float range = 2;
 
-    public GameObject projectile;
-
     public GameObject target;
-
-    private float cooldown;
 
     private SpriteRenderer selectedIndicatorSprite;
 
@@ -25,14 +21,16 @@ public class TowerControl : NetworkBehaviour
 
     public GameObject manger;
 
+    private AttackBehaviour attackBehaviour;
+
     // Use this for initialization
     void Start()
     {
-        cooldown = 0;
-
         var selectedIndicator = transform.GetChild(0).gameObject;
         selectedIndicatorSprite = selectedIndicator.GetComponent<SpriteRenderer>();
         ResizeRangeVizualization(selectedIndicator);
+        attackBehaviour = GetComponent<AttackBehaviour>();
+        attackBehaviour.range = this.range;
     }
 
     // Update is called once per frame
@@ -58,20 +56,6 @@ public class TowerControl : NetworkBehaviour
 
         Move();
 
-        //Fire at stuff if necessary 
-        if (target != null)
-        {
-            var distance = Vector2.Distance(target.transform.position, transform.position);
-
-            if (distance < range)
-            {
-                Debug.DrawLine(transform.position, target.transform.position);
-                Fire();
-            }
-        }
-
-        if (cooldown > 0)
-            cooldown -= Time.deltaTime;
     }
 
     void SetWayPoint(Vector3 target)
@@ -88,30 +72,10 @@ public class TowerControl : NetworkBehaviour
             transform.position = Vector3.MoveTowards(transform.position, waypoint, step);
         }
     }
-
-    void Fire()
-    {
-
-        print("Pew pew pew...");
-
-        if (cooldown <= 0 && target != null)
-        {
-            CmdCreateProjectile();
-            cooldown = fireCooldown;
-        }
-
-    }
-
+    
     void ResizeRangeVizualization(GameObject selectedIndicatorObject)
     {
         selectedIndicatorObject.transform.localScale = new Vector3(range, range, range);
     }
 
-    [Command]
-    void CmdCreateProjectile()
-    {
-        var proj = (GameObject)Instantiate(projectile, transform.position, new Quaternion());
-        proj.GetComponent<Projectile>().target = this.target;
-        NetworkServer.Spawn(proj);
-    }
 }

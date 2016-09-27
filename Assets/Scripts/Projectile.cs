@@ -42,7 +42,7 @@ public class Projectile : NetworkBehaviour
         }
         else
         {
-            this.target.GetComponent<AlienBehaviour>().TakeDamage(damage);
+            this.target.GetComponent<HealthManager>().TakeDamage(damage);
             Destroy(gameObject);
             // Network.Destroy(GetComponent<NetworkView>().viewID);
         }
