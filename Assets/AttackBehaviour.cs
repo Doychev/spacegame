@@ -15,6 +15,7 @@ public class AttackBehaviour : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
+        //      targetListBacklog.
         if (range == null)
             throw new Exception("Attack range has to be set from outside");
 
@@ -34,7 +35,7 @@ public class AttackBehaviour : NetworkBehaviour
 
             if (distance < range)
             {
-                Debug.DrawLine(transform.position, target.transform.position);
+                //Debug.DrawLine(transform.position, target.transform.position);
                 Fire();
             }
         }
@@ -47,7 +48,6 @@ public class AttackBehaviour : NetworkBehaviour
 
         if (currentCooldown <= 0)
         {
-            print("Fire!");
             CmdCreateProjectile();
             currentCooldown = fireCooldown;
         }

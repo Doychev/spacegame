@@ -3,12 +3,12 @@ using System.Collections;
 
 public class SelectTarget : MonoBehaviour
 {
-    AttackBehaviour tower;
+    AttackBehaviour attackBehaviour;
 
     // Use this for initialization
     void Start()
     {
-        tower = transform.parent.GetComponent<AttackBehaviour>();
+        attackBehaviour = transform.parent.GetComponent<AttackBehaviour>();
     }
 
     // Update is called once per frame
@@ -17,11 +17,11 @@ public class SelectTarget : MonoBehaviour
 
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
         if (other.tag == "Aliens")
         {
-            tower.target = other.gameObject;
+            attackBehaviour.target = other.gameObject;
         }
     }
 }

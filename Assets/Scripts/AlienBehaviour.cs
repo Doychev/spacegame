@@ -21,21 +21,26 @@ public class AlienBehaviour : NetworkBehaviour
     public void Start()
     {
         if (moveTarget == null)
-            moveTarget = GameObject.Find("HumanBase");
+            moveTarget = GameObject.Find("HumanBaseTarget");
 
         if (fireTarget == null)
-            moveTarget = GameObject.Find("HumanBase");
+            fireTarget = GameObject.Find("HumanBase");
 
         attackBehaviour = GetComponent<AttackBehaviour>();
         hpCircle = GetComponentInChildren<HP_Visual>();
+        attackBehaviour.range = range;
+        attackBehaviour.target = fireTarget;
     }
 
     public void Update()
     {
+        //Stupid hack for OnTriggerStay2D not working right in AttackBehaviour...
+        transform.position += new Vector3(0.00001f, 0);
+
         if (Vector3.Distance(transform.position, moveTarget.transform.position) > 0.3f)
             Move();
         else {
-            //  attackBehaviour.Fire(fireTarget);
+            attackBehaviour.Fire();
         }
 
     }
