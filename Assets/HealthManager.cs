@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
-public class HealthManager : MonoBehaviour
+public class HealthManager : NetworkBehaviour
 {
-
+    [SyncVar]
     public int health = 100;
     private int maxHealth = 100;
 
