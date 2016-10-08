@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-public class TowerControl : NetworkBehaviour
+public class TowerUnitBehaviour : NetworkBehaviour
 {
     public int health = 100;
     

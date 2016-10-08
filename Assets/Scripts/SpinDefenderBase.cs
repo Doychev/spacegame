@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SpinBase : MonoBehaviour
+public class SpinDefenderBase : MonoBehaviour
 {
     public float rotationSpeed = 1.25f;
     // Use this for initialization

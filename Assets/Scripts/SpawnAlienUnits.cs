@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-public class SpawnAliens : NetworkBehaviour
+public class SpawnAlienUnits : NetworkBehaviour
 {
     public GameObject alien0;
 

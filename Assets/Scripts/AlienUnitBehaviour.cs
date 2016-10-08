@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class AlienBehaviour : NetworkBehaviour
+public class AlienUnitBehaviour : NetworkBehaviour
 {
     public GameObject moveTarget;
     public GameObject fireTarget;

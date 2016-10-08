@@ -6,6 +6,7 @@ using UnityEngine.Networking.Match;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
+//Sets up the game (HUDs and other stuff)
 public class Manager : NetworkManager
 {
     private GameObject HUD;
@@ -46,12 +47,11 @@ public class Manager : NetworkManager
             SetOpposingSides();
             SetupHUD();
 
-            var spawnerScript = GameObject.Find("Spawner").GetComponent<Spawner>();
-            spawnerScript.RegisterManager(this);
+            var initialSetupScript = GameObject.Find("Initializer").GetComponent<Initializer>();
+            initialSetupScript.RegisterManager(this);
 
-            spawnerScript.CmdSetTower();
-            spawnerScript.RpcFlipCamera();
-
+            initialSetupScript.CmdSetTower();
+            initialSetupScript.RpcSetAttackerControl();
 
             //print(NetworkServer.conn);
         }

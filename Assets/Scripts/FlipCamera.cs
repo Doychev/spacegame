@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-public class Flip : NetworkBehaviour
+public class FlipCamera : NetworkBehaviour
 {
     void Start()
     { }
