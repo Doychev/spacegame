@@ -51,7 +51,7 @@ public class Manager : NetworkManager
             initialSetupScript.RegisterManager(this);
 
             initialSetupScript.CmdSetTower();
-            initialSetupScript.RpcSetAttackerControl();
+            initialSetupScript.RpcSpawnAttackerControlObject();
 
             //print(NetworkServer.conn);
         }

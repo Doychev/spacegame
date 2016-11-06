@@ -34,7 +34,7 @@ public class Initializer : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcSetAttackerControl()
+    public void RpcSpawnAttackerControlObject()
     {
         var f = (GameObject)Instantiate(attackerControl);
         NetworkServer.SpawnWithClientAuthority(f, manager.attacker);
